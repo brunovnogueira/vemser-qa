@@ -1,0 +1,18 @@
+{
+  "id": 9223372036854034686,
+  "category": {
+    "id": 1,
+    "name": "dog"
+  },
+  "name": "bob",
+  "photoUrls": [
+    "string"
+  ],
+  "tags": [
+    {
+      "id": 0,
+      "name": "string"
+    }
+  ],
+  "status": "available"
+}
