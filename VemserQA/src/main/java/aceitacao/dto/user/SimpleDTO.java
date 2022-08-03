@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties
-public class GetDTO {
+public class SimpleDTO {
     private String code;
     private String type;
     private String message;
