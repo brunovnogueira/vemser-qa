@@ -24,6 +24,40 @@ public class UserService {
         return res;
     }
 
+    public SimpleDTO adicionarUserArray(String jsonBody){
+        String postUrl = baseuri + "/" + "createWithArray";
+
+        SimpleDTO res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .body(jsonBody)
+        .when()
+                .post(postUrl)
+        .then()
+                .log().all()
+                .statusCode(200)
+                .extract().as(SimpleDTO.class);
+
+        return res;
+    }
+
+    public SimpleDTO adicionarUserList(String jsonBody){
+        String postUrl = baseuri + "/" + "createWithList";
+
+        SimpleDTO res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .body(jsonBody)
+        .when()
+                .post(postUrl)
+        .then()
+                .log().all()
+                .statusCode(200)
+                .extract().as(SimpleDTO.class);
+
+        return res;
+    }
+
     public UserDTO listarPorUsername(String username){
         String getUrl = baseuri + "/" + username;
 
