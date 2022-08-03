@@ -1,7 +1,6 @@
-package service;
-
-import dto.DeleteDTO;
-import dto.PetPayloadDTO;
+package aceitacao.service;
+import aceitacao.dto.pet.DeleteDTO;
+import aceitacao.dto.pet.PetPayloadDTO;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;

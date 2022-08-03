@@ -1,12 +1,10 @@
 package aceitacao;
 
-
-import dto.DeleteDTO;
-import dto.PetPayloadDTO;
+import aceitacao.dto.pet.DeleteDTO;
+import aceitacao.dto.pet.PetPayloadDTO;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import service.PetService;
-
+import aceitacao.service.PetService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,9 +12,6 @@ import java.nio.file.Paths;
 public class PetAceitacao {
 
     PetService petService = new PetService();
-
-    //definir interface
-    String baseUri = "https://petstore.swagger.io/v2/pet";
 
     //Massa de dados para o body
     public String lerJson(String caminhoJson) throws IOException {
