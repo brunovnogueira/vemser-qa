@@ -61,7 +61,7 @@ public class SignUpPage {
         BaseTest.selecionarLista(stateList,"1");
     }
     public void preencherPostCode(){
-        BaseTest.sendKeys(postCode,faker.address().zipCode());
+        BaseTest.sendKeys(postCode,faker.numerify("#####"));
     }
     public void selecionarCountryList(){
         BaseTest.selecionarLista(countryList,"21");

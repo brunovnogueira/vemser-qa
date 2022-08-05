@@ -1,7 +1,10 @@
 package util;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.concurrent.TimeUnit;
 
 public class BaseTest extends Elements{
     //Método de clicar
@@ -29,5 +32,15 @@ public class BaseTest extends Elements{
         waitElement(by);
         Select objSelect = new Select(driver.findElement(by));
         objSelect.selectByValue(value);
+    }
+
+    public static void hover(By by){
+        waitElement(by);
+        Actions builder = new Actions(driver);
+        builder.moveToElement(driver.findElement(by)).perform();
+    }
+
+    public static void esperar(int tempo){
+        driver.manage().timeouts().implicitlyWait(tempo, TimeUnit.MILLISECONDS);
     }
 }

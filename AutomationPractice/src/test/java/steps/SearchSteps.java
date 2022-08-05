@@ -20,4 +20,8 @@ public class SearchSteps extends Browser {
         Assert.assertTrue(searchPage.validarProduto().contains("T-shirts"));
     }
 
+    public void pesquisarTShirt(){
+        loggedPage.preencherSearchField();
+        loggedPage.clicarBtnSearch();
+    }
 }
