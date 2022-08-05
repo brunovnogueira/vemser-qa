@@ -1,7 +1,10 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import util.BaseTest;
+import util.Browser;
+import util.Elements;
 
 public class SignUpPage {
     public static final By btnSubmit = By.cssSelector("#submit");
@@ -35,7 +38,7 @@ public class SignUpPage {
     }
 
     public void preencherUsername(){
-        BaseTest.sendKeys(usernameField,"brn4");
+        BaseTest.sendKeys(usernameField,"brn5");
     }
 
     public void preencherPassword(){
@@ -47,6 +50,7 @@ public class SignUpPage {
     }
 
     public String validarMsg(){
+        Browser.wait.until(ExpectedConditions.presenceOfElementLocated(msg));
         return BaseTest.getText(msg);
     }
 }

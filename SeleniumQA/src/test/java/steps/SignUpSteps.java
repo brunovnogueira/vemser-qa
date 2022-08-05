@@ -6,8 +6,6 @@ import pages.HomePage;
 import pages.SignUpPage;
 import util.Browser;
 
-import java.util.concurrent.TimeUnit;
-
 public class SignUpSteps extends Browser {
 
     SignUpPage signUpPage = new SignUpPage();
