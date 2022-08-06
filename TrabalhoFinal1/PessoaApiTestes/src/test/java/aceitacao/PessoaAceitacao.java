@@ -4,7 +4,6 @@ import aceitacao.dto.*;
 import aceitacao.service.PessoaService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.annotations.TestInstance;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,64 +15,132 @@ public class PessoaAceitacao {
         return new String(Files.readAllBytes(Paths.get(caminhoJson)));
     }
 
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
     @Test
-    public void listarPessoasComSucesso(){
-        PaginacaoPessoaDTO res = pessoaService.listarPessoas(0,20);
+    public void listarPessoasComSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
+        PaginacaoPessoaDTO res = pessoaService.listarPessoas(0,1000);
 
         Assert.assertEquals(res.getPage(),"0");
-        Assert.assertEquals(res.getSize(),"20");
-        Assert.assertEquals(res.getContent().get(0).getIdPessoa(),"797"); //quando add muda a posição na lista
+        Assert.assertEquals(res.getSize(),"1000");
+        Assert.assertFalse(res.getContent().isEmpty());
 
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
     }
-
     @Test
-    public void listarPessoasPorCpfComSucesso(){
-        PessoaDTO res = pessoaService.listarPorCpf("12345678911");
+    public void listarPessoasSemElementosNaPagina(){
+        PaginacaoPessoaDTO res = pessoaService.listarPessoas(1000,20);
 
-        Assert.assertEquals(res.getCpf(),"12345678911");
-        Assert.assertEquals(res.getIdPessoa(),"724");
+        Assert.assertTrue(res.getContent().isEmpty());
+
     }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
+    @Test
+    public void listarPessoasPorCpfComSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
+        PessoaDTO res = pessoaService.listarPorCpf(pessoa.getCpf());
 
+        Assert.assertEquals(res.getCpf(),pessoa.getCpf());
+        Assert.assertEquals(res.getIdPessoa(),pessoa.getIdPessoa());
+
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
+    }
+    @Test
+    public void listarPessoasPorCpfSemSucesso(){
+        Erro500DTO res = pessoaService.listarPorCpfVazio("");
+
+        Assert.assertEquals(res.getError(),"Internal Server Error");
+        Assert.assertEquals(res.getStatus(),"500");
+    }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
-    public void listarRelatorioComSucesso(){
-        RelatorioPessoaDTO[] res = pessoaService.listarRelatorio("724");
+    public void listarRelatorioComSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
 
-        Assert.assertEquals(res[0].getIdPessoa(),"724");
-        Assert.assertEquals(res[0].getEmail(),"andrey.antochevis@gmail.com");
+        RelatorioPessoaDTO[] res = pessoaService.listarRelatorio(pessoa.getIdPessoa());
+
+        Assert.assertEquals(res[0].getIdPessoa(),pessoa.getIdPessoa());
+        Assert.assertEquals(res[0].getEmail(),pessoa.getEmail());
+
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
     }
-
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
-    public void listarListaCompletaComSucesso(){
-        ListaCompletaDTO[] res = pessoaService.listarListaCompleta("1");
+    public void listarRelatorioComNulos(){
+        RelatorioPessoaDTO[] res = pessoaService.listarRelatorio("");
 
-        Assert.assertEquals(res[0].getIdPessoa(),"1");
-        Assert.assertEquals(res[0].getNome(),"Kaique Ceratinho");
-        Assert.assertEquals(res[0].getContatos().get(0).getTelefone(),"51955565585");
-        Assert.assertEquals(res[0].getContatos().get(0).getIdContato(),"1");
-        Assert.assertEquals(res[0].getEnderecos().get(0).getCidade(),"Porto Alegre");
-        Assert.assertEquals(res[0].getEnderecos().get(0).getIdEndereco(),"418");
+        Assert.assertEquals(res[0].getIdPessoa(),"800");
+        Assert.assertNull(res[0].getCidade());
+        Assert.assertNull(res[0].getCep());
+        Assert.assertNull(res[0].getEstado());
+        Assert.assertNull(res[0].getPais());
     }
-
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
-    public void listarListaComEnderecoComSucesso(){
-        ListaComEnderecoDTO[] res = pessoaService.listarListaComEndereco("1");
+    public void listarListaCompletaComSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
 
-        Assert.assertEquals(res[0].getIdPessoa(),"1");
-        Assert.assertEquals(res[0].getNome(),"Kaique Ceratinho");
-        Assert.assertEquals(res[0].getEnderecos().get(0).getCidade(),"Porto Alegre");
-        Assert.assertEquals(res[0].getEnderecos().get(0).getIdEndereco(),"418");
+        ListaCompletaDTO[] res = pessoaService.listarListaCompleta(pessoa.getIdPessoa());
+
+        Assert.assertEquals(res[0].getIdPessoa(),pessoa.getIdPessoa());
+        Assert.assertEquals(res[0].getNome(),pessoa.getNome());
+
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
     }
-
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
-    public void listarListaComContatoComSucesso(){
-        ListaComContatoDTO[] res = pessoaService.listarListaComContato("724");
+    public void listarListaCompletaComCamposVazios(){
+        ListaCompletaDTO[] res = pessoaService.listarListaCompleta("");
 
-        Assert.assertEquals(res[0].getIdPessoa(),"724");
-        Assert.assertEquals(res[0].getNome(),"João Andrey");
-        Assert.assertEquals(res[0].getContatos().get(0).getTipoContato(),"RESIDENCIAL");
-        Assert.assertEquals(res[0].getContatos().get(0).getTelefone(),"(66)66666-6666");
+        Assert.assertEquals(res[0].getIdPessoa(),"800");
+        Assert.assertTrue(res[0].getContatos().isEmpty());
+        Assert.assertTrue(res[0].getEnderecos().isEmpty());
     }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
+    @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
+    public void listarListaComEnderecoComSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
 
+        ListaComEnderecoDTO[] res = pessoaService.listarListaComEndereco(pessoa.getIdPessoa());
+
+        Assert.assertEquals(res[0].getIdPessoa(),pessoa.getIdPessoa());
+        Assert.assertEquals(res[0].getNome(),pessoa.getNome());
+        Assert.assertTrue(res[0].getEnderecos().isEmpty());
+
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
+    }
+    @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
+    public void listarListaComEnderecoVazio(){
+        ListaComEnderecoDTO[] res = pessoaService.listarListaComEndereco("");
+
+        Assert.assertEquals(res[0].getIdPessoa(),"800");
+        Assert.assertTrue(res[0].getEnderecos().isEmpty());
+    }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
+    @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
+    public void listarListaComContatoComSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
+
+        ListaComContatoDTO[] res = pessoaService.listarListaComContato(pessoa.getIdPessoa());
+
+        Assert.assertEquals(res[0].getIdPessoa(),pessoa.getIdPessoa());
+        Assert.assertEquals(res[0].getNome(),pessoa.getNome());
+        Assert.assertTrue(res[0].getContatos().isEmpty());
+
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
+    }
+    @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
+    public void listarListaComContatoVazio(){
+        ListaComContatoDTO[] res = pessoaService.listarListaComContato("");
+
+        Assert.assertEquals(res[0].getIdPessoa(),"800");
+        Assert.assertTrue(res[0].getContatos().isEmpty());
+    }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
 //    @Test
 //    public void listarDataNascimentoComSucesso(){
 //        PessoaDTO[] res = pessoaService.listarDataNascimento();
@@ -85,35 +152,80 @@ public class PessoaAceitacao {
 //    }
 //https://dbc-pessoa-api.herokuapp.com/pessoa/data-nascimento?data=01%2F01%2F2000&dtFinal=31%2F12%2F2022
 //https://dbc-pessoa-api.herokuapp.com/pessoa/data-nascimento?data=01%2F01%2F2000&dtFinal=31%2F12%2F2022
-
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
     @Test
-    public void listarByName(){
-        PessoaDTO[] res = pessoaService.listarByName("João");
+    public void listarByName() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
 
-        Assert.assertEquals(res[0].getIdPessoa(),"724");
-        Assert.assertEquals(res[0].getNome(),"João Andrey");
+        PessoaDTO[] res = pessoaService.listarByName(pessoa.getNome());
+
+        Assert.assertEquals(res[0].getIdPessoa(),pessoa.getIdPessoa());
+        Assert.assertEquals(res[0].getNome(),pessoa.getNome());
+
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
     }
-
     @Test
-    public void adicionarPessoa() throws IOException {
+    public void listarByNameSemSucesso(){
+        PessoaDTO[] res = pessoaService.listarByName("");
+
+        //Não deveria trazer nomes, mas traz
+        Assert.assertFalse(res[0].getIdPessoa().isEmpty());
+    }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
+    @Test
+    public void adicionarPessoaComSucesso() throws IOException {
         String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
         PessoaDTO res = pessoaService.adicionarPessoa(jsonBody);
 
         Assert.assertEquals(res.getEmail(),"bruno.nogueira@email.com.br");
         Assert.assertEquals(res.getNome(),"Bruno Nogueira");
-    }
 
+        pessoaService.deletarPessoa(res.getIdPessoa());
+    }
     @Test
-    public void atualizarPessoa() throws IOException {
+    public void adicionarPessoaSemSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/PessoaErro.json");
+        Erro400DTO res = pessoaService.adicionarPessoaErro(jsonBody);
+
+        Assert.assertEquals(res.getErrors().get(0),"cpf: size must be between 0 and 11");
+    }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
+    @Test
+    public void atualizarPessoaComSucesso() throws IOException {
+        String jsonBodyAdd = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBodyAdd);
+
         String jsonBody = lerJson("src/test/resources/data/PessoaPut.json");
-        PessoaDTO res = pessoaService.atualizarPessoa(jsonBody,"861");
+        PessoaDTO res = pessoaService.atualizarPessoa(jsonBody, pessoa.getIdPessoa());
 
         Assert.assertEquals(res.getEmail(),"bruno@email.com");
         Assert.assertEquals(res.getNome(),"Bruno Nogueira");
-    }
 
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
+    }
     @Test
-    public void deletarPessoa(){
-        pessoaService.deletarPessoa("798");
+    public void atualizarPessoaSemSucesso() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/PessoaPutErro.json");
+        Erro400DTO res = pessoaService.atualizarPessoaErro(jsonBody,"890");
+
+        Assert.assertEquals(res.getErrors().get(0),"dataNascimento: must be a past date");
+    }
+    /*------------------------------------------------------------------------------------------------------------------------------------*/
+    @Test
+    public void deletarPessoa() throws IOException {
+        String jsonBody = lerJson("src/test/resources/data/Pessoa.json");
+        PessoaDTO pessoa = pessoaService.adicionarPessoa(jsonBody);
+
+        pessoaService.deletarPessoa(pessoa.getIdPessoa());
+
+        Assert.assertEquals(pessoaService.listarByName(pessoa.getNome()).length, 0);
+
+    }
+    @Test
+    public void deletarPessoaSemSucesso(){
+        Erro404DTO res = pessoaService.deletarPessoaErro("2000");
+
+        Assert.assertEquals(res.getMessage(),"ID da pessoa nao encontrada");
     }
 }

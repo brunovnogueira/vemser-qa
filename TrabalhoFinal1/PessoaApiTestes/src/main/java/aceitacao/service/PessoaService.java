@@ -50,6 +50,27 @@ public class PessoaService {
         return res;
     }
 
+    public Erro500DTO listarPorCpfVazio(String cpf){
+        String url = baseUrl + "pessoa/{cpf}/cpf";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
+
+
+        Erro500DTO res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .header("Authorization",token)
+                .pathParam("cpf",cpf)
+                .when()
+                .get(url)
+                .then()
+                .log().all()
+                .statusCode(500)
+                .extract().as(Erro500DTO.class)
+                ;
+
+        return res;
+    }
+
     public RelatorioPessoaDTO[] listarRelatorio(String id){
         String url = baseUrl + "pessoa/relatorio?idPessoa={id}";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
@@ -193,6 +214,26 @@ public class PessoaService {
         return res;
     }
 
+    public Erro400DTO adicionarPessoaErro(String jsonBody){
+        String url = baseUrl + "pessoa";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
+
+        Erro400DTO res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .header("Authorization",token)
+                .body(jsonBody)
+                .when()
+                .post(url)
+                .then()
+                .log().all()
+                .statusCode(400)
+                .extract().as(Erro400DTO.class)
+                ;
+
+        return res;
+    }
+
     public PessoaDTO atualizarPessoa(String jsonBody,String id){
         String url = baseUrl + "pessoa/{id}";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
@@ -209,6 +250,27 @@ public class PessoaService {
                 .log().all()
                 .statusCode(200)
                 .extract().as(PessoaDTO.class)
+                ;
+
+        return res;
+    }
+
+    public Erro400DTO atualizarPessoaErro(String jsonBody, String id){
+        String url = baseUrl + "pessoa/{id}";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
+
+        Erro400DTO res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .header("Authorization",token)
+                .pathParam("id",id)
+                .body(jsonBody)
+                .when()
+                .put(url)
+                .then()
+                .log().all()
+                .statusCode(400)
+                .extract().as(Erro400DTO.class)
                 ;
 
         return res;
@@ -231,4 +293,27 @@ public class PessoaService {
                 ;
 
     }
+
+    public Erro404DTO deletarPessoaErro(String id){
+        String url = baseUrl + "pessoa/{id}";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
+
+        Erro404DTO res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .header("Authorization",token)
+                .pathParam("id",id)
+                .when()
+                .delete(url)
+                .then()
+                .log().all()
+                .statusCode(404)
+                .extract().as(Erro404DTO.class)
+        ;
+
+        return res;
+    }
+
+    /*UTIL---------------------------------------------------------------------------------------------------------------*/
+
 }
