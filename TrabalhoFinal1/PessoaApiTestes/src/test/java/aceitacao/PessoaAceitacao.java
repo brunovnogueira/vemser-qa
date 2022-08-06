@@ -18,7 +18,7 @@ public class PessoaAceitacao {
 
     @Test
     public void listarPessoasComSucesso(){
-        PaginacaoPessoaDTO res = pessoaService.listarPessoas();
+        PaginacaoPessoaDTO res = pessoaService.listarPessoas(0,20);
 
         Assert.assertEquals(res.getPage(),"0");
         Assert.assertEquals(res.getSize(),"20");
@@ -28,7 +28,7 @@ public class PessoaAceitacao {
 
     @Test
     public void listarPessoasPorCpfComSucesso(){
-        PessoaDTO res = pessoaService.listarPorCpf();
+        PessoaDTO res = pessoaService.listarPorCpf("12345678911");
 
         Assert.assertEquals(res.getCpf(),"12345678911");
         Assert.assertEquals(res.getIdPessoa(),"724");
@@ -36,7 +36,7 @@ public class PessoaAceitacao {
 
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
     public void listarRelatorioComSucesso(){
-        RelatorioPessoaDTO[] res = pessoaService.listarRelatorio();
+        RelatorioPessoaDTO[] res = pessoaService.listarRelatorio("724");
 
         Assert.assertEquals(res[0].getIdPessoa(),"724");
         Assert.assertEquals(res[0].getEmail(),"andrey.antochevis@gmail.com");
@@ -44,7 +44,7 @@ public class PessoaAceitacao {
 
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
     public void listarListaCompletaComSucesso(){
-        ListaCompletaDTO[] res = pessoaService.listarListaCompleta();
+        ListaCompletaDTO[] res = pessoaService.listarListaCompleta("1");
 
         Assert.assertEquals(res[0].getIdPessoa(),"1");
         Assert.assertEquals(res[0].getNome(),"Kaique Ceratinho");
@@ -56,7 +56,7 @@ public class PessoaAceitacao {
 
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
     public void listarListaComEnderecoComSucesso(){
-        ListaComEnderecoDTO[] res = pessoaService.listarListaComEndereco();
+        ListaComEnderecoDTO[] res = pessoaService.listarListaComEndereco("1");
 
         Assert.assertEquals(res[0].getIdPessoa(),"1");
         Assert.assertEquals(res[0].getNome(),"Kaique Ceratinho");
@@ -66,7 +66,7 @@ public class PessoaAceitacao {
 
     @Test //Lista de relatorio por id e retorna uma lista. Deveria retornar somente um objeto, pois id é unico
     public void listarListaComContatoComSucesso(){
-        ListaComContatoDTO[] res = pessoaService.listarListaComContato();
+        ListaComContatoDTO[] res = pessoaService.listarListaComContato("724");
 
         Assert.assertEquals(res[0].getIdPessoa(),"724");
         Assert.assertEquals(res[0].getNome(),"João Andrey");
@@ -88,7 +88,7 @@ public class PessoaAceitacao {
 
     @Test
     public void listarByName(){
-        PessoaDTO[] res = pessoaService.listarByName();
+        PessoaDTO[] res = pessoaService.listarByName("João");
 
         Assert.assertEquals(res[0].getIdPessoa(),"724");
         Assert.assertEquals(res[0].getNome(),"João Andrey");
@@ -106,7 +106,7 @@ public class PessoaAceitacao {
     @Test
     public void atualizarPessoa() throws IOException {
         String jsonBody = lerJson("src/test/resources/data/PessoaPut.json");
-        PessoaDTO res = pessoaService.atualizarPessoa(jsonBody);
+        PessoaDTO res = pessoaService.atualizarPessoa(jsonBody,"861");
 
         Assert.assertEquals(res.getEmail(),"bruno@email.com");
         Assert.assertEquals(res.getNome(),"Bruno Nogueira");
@@ -114,6 +114,6 @@ public class PessoaAceitacao {
 
     @Test
     public void deletarPessoa(){
-        pessoaService.deletarPessoa();
+        pessoaService.deletarPessoa("798");
     }
 }

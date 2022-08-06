@@ -8,10 +8,8 @@ import static io.restassured.RestAssured.given;
 public class PessoaService {
     String baseUrl = "https://dbc-pessoa-api.herokuapp.com/";
 
-    public PaginacaoPessoaDTO listarPessoas(){
+    public PaginacaoPessoaDTO listarPessoas(Integer pagina, Integer tamanho){
         String url = baseUrl + "pessoa?pagina={pagina}&tamanhoDasPaginas={tamanho}";
-        Integer pagina = 0;
-        Integer tamanho = 20;
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         PaginacaoPessoaDTO res = given()
@@ -31,9 +29,8 @@ public class PessoaService {
         return res;
     }
 
-    public PessoaDTO listarPorCpf(){
+    public PessoaDTO listarPorCpf(String cpf){
         String url = baseUrl + "pessoa/{cpf}/cpf";
-        String cpf = "12345678911";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
 
@@ -53,9 +50,8 @@ public class PessoaService {
         return res;
     }
 
-    public RelatorioPessoaDTO[] listarRelatorio(){
+    public RelatorioPessoaDTO[] listarRelatorio(String id){
         String url = baseUrl + "pessoa/relatorio?idPessoa={id}";
-        String id = "724";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         RelatorioPessoaDTO[] res = given()
@@ -74,9 +70,8 @@ public class PessoaService {
         return res;
     }
 
-    public ListaCompletaDTO[] listarListaCompleta(){
+    public ListaCompletaDTO[] listarListaCompleta(String id){
         String url = baseUrl + "pessoa/lista-completa?idPessoa={id}";
-        String id = "1";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         ListaCompletaDTO[] res = given()
@@ -95,9 +90,8 @@ public class PessoaService {
         return res;
     }
 
-    public ListaComEnderecoDTO[] listarListaComEndereco(){
+    public ListaComEnderecoDTO[] listarListaComEndereco(String id){
         String url = baseUrl + "pessoa/lista-com-enderecos?idPessoa={id}";
-        String id = "1";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         ListaComEnderecoDTO[] res = given()
@@ -116,9 +110,8 @@ public class PessoaService {
         return res;
     }
 
-    public ListaComContatoDTO[] listarListaComContato(){
+    public ListaComContatoDTO[] listarListaComContato(String id){
         String url = baseUrl + "pessoa/lista-com-contatos?idPessoa={id}";
-        String id = "724";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         ListaComContatoDTO[] res = given()
@@ -160,9 +153,8 @@ public class PessoaService {
 //        return res;
 //    }
 
-    public PessoaDTO[] listarByName(){
+    public PessoaDTO[] listarByName(String nome){
         String url = baseUrl + "pessoa/byname?nome={nome}";
-        String nome = "João";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         PessoaDTO[] res = given()
@@ -201,9 +193,8 @@ public class PessoaService {
         return res;
     }
 
-    public PessoaDTO atualizarPessoa(String jsonBody){
+    public PessoaDTO atualizarPessoa(String jsonBody,String id){
         String url = baseUrl + "pessoa/{id}";
-        String id = "861";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         PessoaDTO res = given()
@@ -223,9 +214,8 @@ public class PessoaService {
         return res;
     }
 
-    public void deletarPessoa(){
+    public void deletarPessoa(String id){
         String url = baseUrl + "pessoa/{id}";
-        String id = "824";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2ZW1zZXItYXBpIiwianRpIjoiNDA0IiwiY2FyZ29zIjpbXSwiaWF0IjoxNjU5Nzk5NDYxLCJleHAiOjE2NTk4ODU4NjF9.0ARNPOb3vsvH817Ur-mv9VOCPUlzTFaOMCuO0M-4SPU";
 
         given()
