@@ -59,4 +59,8 @@ public class BaseTest extends Elements{
         builder.click(element(by)).perform();
         builder.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).build().perform();
     }
+    public static String getAtribute(By by,String atributo){
+        waitElement(by);
+        return element(by).getAttribute(atributo);
+    }
 }

@@ -1,8 +1,8 @@
 steps\LoginSteps.class
+steps\LogoutSteps.class
 steps\AddTocartSteps.class
 util\Elements.class
 pages\LoggedPage.class
-steps\SortSteps.class
 util\Browser.class
 pages\CartPage.class
 pages\HomePage.class

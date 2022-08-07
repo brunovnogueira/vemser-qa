@@ -20,7 +20,7 @@ public class HomePage {
         BaseTest.click(btnLogin);
     }
 
-    public String validarBtnLogin(){
-        return BaseTest.getText(btnLogin);
+    public String validarBtnLogin(String atributo){
+        return BaseTest.getAtribute(btnLogin,atributo);
     }
 }
