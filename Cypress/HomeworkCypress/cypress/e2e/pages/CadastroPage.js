@@ -44,5 +44,17 @@ export default class CadastroPage{
   clicarBtnCriar(){
     utils.click(cadastroElements.botaoCriar)
   }
+
+  clicarBtnEditar(){
+    utils.click(cadastroElements.botaoEditar)
+  }
+
+  criar(){
+    utils.navegar(cadastroElements.url);
+    utils.preencherInput(cadastroElements.nomeCampo,'Bruno');
+    utils.preencherInput(cadastroElements.ultimoNomeCampo,"Souza");
+    utils.preencherInput(cadastroElements.emailCampo,"souza@email.com");
+    utils.click(cadastroElements.botaoCriar);
+  }
 }
 

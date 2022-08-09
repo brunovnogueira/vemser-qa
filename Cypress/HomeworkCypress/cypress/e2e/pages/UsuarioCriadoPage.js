@@ -36,4 +36,8 @@ export default class UsuarioCriadoPage{
   validarEndereco(){
     utils.validarText(usuarioCriadoElements.textoEnderecoCampo,'Rua dois')
   }
+
+  clicarBtnEditar(){
+    utils.click(usuarioCriadoElements.btnEditar);
+  }
 }

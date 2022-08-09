@@ -13,7 +13,7 @@ export default class Utils {
  }
 
  preencherInput(element, text){ 
-    cy.get(element).type(text)
+    cy.get(element).clear().type(text)
  }
 
  preencherInputComTeclaNoFinal(element, text, tecla){

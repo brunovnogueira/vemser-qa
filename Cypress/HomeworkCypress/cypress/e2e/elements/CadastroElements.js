@@ -9,4 +9,5 @@ export default class CadastroElements{
   generoCampo = '#user_gender';
   idadeCampo = '#user_age';
   botaoCriar = '#new_user > div:nth-child(7) > div > div > input[type=submit]';
+  botaoEditar = '.actions > input';
 }

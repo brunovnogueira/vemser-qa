@@ -7,4 +7,5 @@ export default class UsuarioCriadoElements{
   textoProfissaoCampo = '.s9 > :nth-child(3) > .col > :nth-child(6)';
   textoIdadeCampo = '.s9 > :nth-child(3) > .col > :nth-child(7)';
   textoEnderecoCampo = '.s9 > :nth-child(3) > .col > :nth-child(8)';
+  btnEditar = 'body > div.row > div.col.s9 > div:nth-child(3) > div > a.btn.waves-light.blue';
 }
